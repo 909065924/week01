@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="com.bwei.dao.GoodsDao">
+	
+			<select id="getGoodsAll" parameterType="com.bwei.beans.Goods" resultType="com.bwei.beans.Goods">
+				
+				select * from goods where 1 = 1 
+				
+				<if test="gname != null and gname != ''">
+					and gname like '%${gname}%'
+				</if>
+				
+				<if test="gdate != null and gdate != '' and egdate != null and egdate != ''">
+					and gdate BETWEEN #{gdate} and #{egdate}
+				</if>
+				
+				<if test="gprice != null and gprice != '' and egprice != null and egprice != ''">
+					and gprice BETWEEN #{gprice} and #{egprice}
+				</if>
+				
+				<if test="gtime != null and gtime != '' and egtime != null and egtime != ''">
+					and gtime BETWEEN #{gtime} and #{egtime}
+				</if>
+				<if test="gdatetime != null and gdatetime != ''">
+					and gdatetime like '%${gdatetime}%'
+				</if>
+				<if test="gdy != null and gdy != ''">
+					and gdy like '%${gdy}%'
+				</if>
+				
+				<if test="gdateId != null and gdateId != ''">
+					 order by #{gdateId}
+				</if>
+				
+			</select>
+			
+			<select id="getGoodsAlla" parameterType="com.bwei.beans.Goods" resultType="com.bwei.beans.Goods">
+				
+				select * from goods  order by gdate desc
+				
+			</select>
+			<select id="getGoodsAllb" parameterType="com.bwei.beans.Goods" resultType="com.bwei.beans.Goods">
+				
+				select * from goods  order by gtime desc
+				
+			</select>
+			<select id="getGoodsAllc" parameterType="com.bwei.beans.Goods" resultType="com.bwei.beans.Goods">
+				
+				select * from goods  order by gdatetime desc
+				
+			</select>
+			<select id="getGoodsByGid" parameterType="int" resultType="com.bwei.beans.Goods">
+			
+				select * from goods where gid = ${_parameter}
+			
+			</select>
+			
+			<insert id="addGoods" parameterType="com.bwei.beans.Goods">
+			
+				insert into goods (gname, gdy, gprice, gdate, gtime, gtype, gdatetime, gchina, gzt) values (#{gname},#{gdy},#{gprice},#{gdate},#{gtime},#{gtype},#{gdatetime},#{gchina},#{gzt})
+			
+			</insert>
+			
+			<delete id="deleGoodsByGid" parameterType="String">
+			
+				delete from goods where gid in (${_parameter})
+			
+			</delete>
+
+			<update id="updateGoods" parameterType="com.bwei.beans.Goods">
+			
+				update goods  set gname=#{gname}, gdy=#{gdy}, gprice=#{gprice}, gdate=#{gdate}, gtime=#{gtime}, gtype=#{gtype}, gdatetime=#{gdatetime}, gchina=#{gchina}, gzt=${gzt} where gid = ${gid}
+			
+			</update>
+	</mapper>
